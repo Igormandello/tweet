@@ -18,17 +18,26 @@ pub fn draw<B: Backend>(f: &mut Frame<B>, app: &mut App) {
 
 fn render_tweet<B>(f: &mut Frame<B>, area: Rect, app: &mut App) where B: Backend {
     let block = Block::default().borders(Borders::ALL);
-    let tweet = app.current_tweet.clone().unwrap_or(String::new());
-    let text = Span::from(tweet.as_ref());
+    let tweet = app.tweets[app.current_tweet].clone();
+    let text = vec![
+        Spans::from(vec![
+            Span::styled(tweet.user.name, Style::default().add_modifier(Modifier::BOLD)),
+            Span::raw(" @"),
+            Span::from(tweet.user.screen_name),
+        ]),
+        Spans::default(),
+        Spans::from(tweet.full_text.as_ref()),
+    ];
+
     let tweet = Paragraph::new(text).wrap(Wrap { trim: false });
 
     let width = max(area.width, 60);
-    let height = max(area.height, 14);
+    let height = max(area.height, 16);
 
     let center_chunk = Layout::default()
         .constraints([Constraint::Min(0)])
         .horizontal_margin((width - 60) / 2)
-        .vertical_margin((height - 14) / 2)
+        .vertical_margin((height - 16) / 2)
         .split(area)[0];
 
     let text_chunk = Layout::default()
