@@ -12,6 +12,7 @@ use crate::event::{Config, Event, Events};
 mod app;
 mod ui;
 mod event;
+mod twitter;
 
 #[derive(Debug, FromArgs)]
 #[argh(description = "procrastinate directly from your terminal")]
