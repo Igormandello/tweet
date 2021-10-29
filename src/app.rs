@@ -1,3 +1,4 @@
+use std::cmp::{max, min};
 use std::iter::Cycle;
 use crate::twitter::{Tweet, TwitterClient};
 
@@ -19,9 +20,18 @@ impl App {
     pub fn on_key(&mut self, c: char) {
         match c {
             'q' => self.running = false,
-            'p' => self.current_tweet += 1,
+            ',' | '<' => self.previous_tweet(),
+            '.' | '>' => self.next_tweet(),
             _ => {}
         }
+    }
+
+    pub fn previous_tweet(&mut self) {
+        self.current_tweet = if self.current_tweet == 0 { 0 } else { self.current_tweet - 1 };
+    }
+
+    pub fn next_tweet(&mut self) {
+        self.current_tweet = min(self.current_tweet + 1, self.tweets.len() - 1);
     }
 
     pub fn on_tick(&mut self) {}

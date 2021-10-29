@@ -39,9 +39,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         match events.next()? {
             Event::Input(key) => match key {
-                Key::Char(c) => {
-                    app.on_key(c);
-                }
+                Key::Char(c) => app.on_key(c),
+                Key::Right => app.next_tweet(),
+                Key::Left => app.previous_tweet(),
                 _ => {}
             },
             Event::Tick => app.on_tick()
