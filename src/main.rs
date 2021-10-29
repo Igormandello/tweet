@@ -20,21 +20,19 @@ struct CLI {
     only_one: bool,
 }
 
+
 fn main() -> Result<(), Box<dyn Error>> {
     let _cli: CLI = argh::from_env();
 
-    let stdout = io::stdout().into_raw_mode()?;
-    let stdout = MouseTerminal::from(stdout);
-    let stdout = AlternateScreen::from(stdout);
-    let backend = TermionBackend::new(stdout);
-    let mut terminal = Terminal::new(backend)?;
+    let terminal_builder = |x| Terminal::new(TermionBackend::new(AlternateScreen::from(MouseTerminal::from(x))));
+    let mut terminal = terminal_builder(io::stdout().into_raw_mode()?)?;
 
     let events = Events::with_config(Config {
         tick_rate: Duration::from_millis(200),
         ..Config::default()
     });
 
-    let mut app = App::new("Tweet");
+    let mut app = App::new();
     loop {
         terminal.draw(|f| ui::draw(f, &mut app))?;
 
@@ -48,7 +46,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             Event::Tick => app.on_tick()
         }
 
-        if app.should_quit {
+        if !app.running {
             break;
         }
     }
