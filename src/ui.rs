@@ -1,6 +1,7 @@
 use std::cmp::max;
+
 use tui::{backend::Backend, Frame};
-use tui::layout::{Constraint, Layout, Rect};
+use tui::layout::{Alignment, Constraint, Layout, Rect};
 use tui::style::{Modifier, Style};
 use tui::text::{Span, Spans};
 use tui::widgets::{Block, Borders, Paragraph, Wrap};
@@ -17,7 +18,12 @@ pub fn draw<B: Backend>(f: &mut Frame<B>, app: &mut App) {
 }
 
 fn render_tweet<B>(f: &mut Frame<B>, area: Rect, app: &mut App) where B: Backend {
-    let block = Block::default().borders(Borders::ALL);
+    let tweet_index = format!(" {}/{} ", app.current_tweet + 1, app.tweets.len());
+    let block = Block::default()
+        .borders(Borders::ALL)
+        .title(tweet_index)
+        .title_alignment(Alignment::Right);
+
     let tweet = app.tweets[app.current_tweet].clone();
     let text = vec![
         Spans::from(vec![
