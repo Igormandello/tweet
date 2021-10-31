@@ -15,22 +15,10 @@ pub struct Events {
     rx: mpsc::Receiver<Event<Key>>,
 }
 
-#[derive(Debug, Clone, Copy)]
-pub struct Config {
-    pub tick_rate: Duration,
-}
-
-impl Default for Config {
-    fn default() -> Config {
-        Config {
-            tick_rate: Duration::from_millis(250),
-        }
-    }
-}
-
 impl Events {
-    pub fn with_config(config: Config) -> Events {
+    pub fn new() -> Events {
         let (tx, rx) = mpsc::channel();
+        let tick_rate = Duration::from_millis(200);
 
         let _input_handle = {
             let tx = tx.clone();
@@ -53,7 +41,8 @@ impl Events {
                     eprintln!("{}", err);
                     break;
                 }
-                thread::sleep(config.tick_rate);
+
+                thread::sleep(tick_rate);
             })
         };
 

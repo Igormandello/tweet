@@ -1,5 +1,4 @@
-use std::cmp::{max, min};
-use std::iter::Cycle;
+use std::cmp::min;
 
 use crate::twitter::{Tweet, TwitterClient};
 
