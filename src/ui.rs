@@ -1,4 +1,5 @@
 use std::cmp::max;
+use regex::Regex;
 
 use tui::{backend::Backend, Frame};
 use tui::layout::{Alignment, Constraint, Layout, Rect};
@@ -7,6 +8,10 @@ use tui::text::{Span, Spans};
 use tui::widgets::{Block, Borders, Paragraph, Wrap};
 
 use crate::app::App;
+
+lazy_static! {
+    static ref TWITTER_LINK_REGEX: Regex = Regex::new("( )?https://t.co/\\w*").unwrap();
+}
 
 pub fn draw<B: Backend>(f: &mut Frame<B>, app: &mut App) {
     let chunks = Layout::default()
@@ -25,6 +30,7 @@ fn render_tweet<B>(f: &mut Frame<B>, area: Rect, app: &mut App) where B: Backend
         .title_alignment(Alignment::Right);
 
     let tweet = app.tweets[app.current_tweet].clone();
+    let filtered_tweet_text = &*TWITTER_LINK_REGEX.replace_all(&tweet.full_text, "");
     let text = vec![
         Spans::from(vec![
             Span::styled(tweet.user.name, Style::default().add_modifier(Modifier::BOLD)),
@@ -32,7 +38,7 @@ fn render_tweet<B>(f: &mut Frame<B>, area: Rect, app: &mut App) where B: Backend
             Span::from(tweet.user.screen_name),
         ]),
         Spans::default(),
-        Spans::from(tweet.full_text.as_ref()),
+        Spans::from(filtered_tweet_text),
     ];
 
     let tweet = Paragraph::new(text).wrap(Wrap { trim: false });

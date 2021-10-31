@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate lazy_static;
+
 use std::{error::Error, io};
 use std::time::Duration;
 

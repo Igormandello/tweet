@@ -4,6 +4,7 @@ use serde::Deserialize;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Tweet {
+    pub id_str: String,
     pub created_at: String,
     pub full_text: String,
     pub user: User,
