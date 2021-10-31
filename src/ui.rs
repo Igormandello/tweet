@@ -70,6 +70,8 @@ fn render_commands<B>(f: &mut Frame<B>, area: Rect) where B: Backend {
         Span::raw(" previous tweet "),
         Span::styled(" > ", Style::default().add_modifier(Modifier::REVERSED)),
         Span::raw(" next tweet "),
+        Span::styled(" r ", Style::default().add_modifier(Modifier::REVERSED)),
+        Span::raw(" reload timeline "),
     ]);
 
     let block = Block::default().borders(Borders::ALL).title(Span::styled(

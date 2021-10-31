@@ -1,5 +1,6 @@
 use std::cmp::{max, min};
 use std::iter::Cycle;
+
 use crate::twitter::{Tweet, TwitterClient};
 
 pub struct App {
@@ -22,6 +23,7 @@ impl App {
             'q' => self.running = false,
             ',' | '<' => self.previous_tweet(),
             '.' | '>' => self.next_tweet(),
+            'r' => self.load_tweets(),
             _ => {}
         }
     }
@@ -35,4 +37,9 @@ impl App {
     }
 
     pub fn on_tick(&mut self) {}
+
+    fn load_tweets(&mut self) {
+        self.current_tweet = 0;
+        self.tweets = TwitterClient::fetch_timeline();
+    }
 }
