@@ -33,18 +33,20 @@ fn main() -> Result<(), Box<dyn Error>> {
     let events = Events::new();
 
     let mut app = App::new();
-    loop {
-        terminal.draw(|f| ui::draw(f, &mut app))?;
+    terminal.draw(|f| ui::draw(f, &mut app))?;
 
+    loop {
         match events.next()? {
             Event::Input(key) => match key {
                 Key::Char(c) => app.on_key(c),
                 Key::Right => app.next_tweet(),
                 Key::Left => app.previous_tweet(),
-                _ => {}
+                _ => continue
             },
             Event::Tick => app.on_tick()
         }
+
+        terminal.draw(|f| ui::draw(f, &mut app))?;
 
         if !app.running {
             break;
