@@ -1,5 +1,3 @@
-use std::error::Error;
-
 use serde::Deserialize;
 
 #[derive(Clone, Debug, Deserialize)]
@@ -8,6 +6,7 @@ pub struct Tweet {
     pub created_at: String,
     pub full_text: String,
     pub user: User,
+    pub entities: Entities,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -16,9 +15,18 @@ pub struct User {
     pub screen_name: String,
 }
 
-impl Tweet {
-    pub fn parse_timeline(json_str: impl AsRef<str>) -> Result<Vec<Tweet>, Box<dyn Error>> {
-        let tweets = serde_json::from_str(json_str.as_ref())?;
-        Ok(tweets)
-    }
+#[derive(Clone, Debug, Deserialize)]
+pub struct Entities {
+    pub urls: Vec<URLEntity>,
+    pub media: Option<Vec<MediaEntity>>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct URLEntity {
+    pub url: String,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct MediaEntity {
+    pub media_url_https: String,
 }
