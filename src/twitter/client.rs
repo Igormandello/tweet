@@ -1,12 +1,9 @@
-use std::{borrow::Cow, collections::HashMap, str};
-use std::error::Error;
+use std::{collections::HashMap, str};
 
 pub use oauth_client as oauth;
-use oauth_client::Result as Result;
 use oauth_client::Token;
 pub use serde_json;
 
-use crate::event::Config;
 use crate::twitter::Tweet;
 
 pub const TIMELINE_URL: &str = "https://api.twitter.com/1.1/statuses/home_timeline.json";
@@ -17,7 +14,7 @@ impl TwitterClient {
     pub fn fetch_timeline() -> Vec<Tweet> {
         let (api_key, token) = TwitterClient::generate_credentials();
         let mut param = HashMap::new();
-        param.insert("count".into(), "20".into());
+        param.insert("count".into(), "200".into());
         param.insert("exclude_replies".into(), "true".into());
         param.insert("tweet_mode".into(), "extended".into());
 

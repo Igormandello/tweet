@@ -1,15 +1,13 @@
 use std::cmp::max;
 use std::collections::HashMap;
-use std::path::Path;
 
-use image::{Rgb, RgbImage};
 use image::imageops::FilterType;
 use regex::Regex;
 use tui::{backend::Backend, Frame};
 use tui::layout::{Alignment, Constraint, Layout, Rect};
 use tui::style::{Color, Modifier, Style};
 use tui::text::{Span, Spans};
-use tui::widgets::{Block, Borders, Paragraph, Widget, Wrap};
+use tui::widgets::{Block, Borders, Paragraph, Wrap};
 use tui::widgets::canvas::{Canvas, Points};
 
 use crate::app::App;
